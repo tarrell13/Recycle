@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3
 
 '''
-Arthur:        Tarrell Fletcher
+Authur:        Tarrell Fletcher
 Date Created : December 16, 2016
 Last Modified: December 17, 2016 03:38
 Email:         Tarrell13@verizon.net
