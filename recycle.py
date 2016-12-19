@@ -45,7 +45,14 @@ for i in range(1, len(sys.argv)):
 
 
 def success(file):
-    return "\"%s\" successfully sent to Trash :)" %file
+
+    location = '"'
+
+    if os.uname()[0] == "Darwin":
+        location = "~/.Trash"
+    elif os.uname()[0] == "Linux":
+        location = "~/.local/share/Trash"
+    return "\"%s\" successfully sent to %s" %(file, location)
 
 '''Handle Multiple Command Line Files'''
 def multi_line(arguments):
