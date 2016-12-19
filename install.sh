@@ -3,7 +3,7 @@
 # This script will run the necessary commands to install the proper python interpreter and modules
 #Authur: Tarrell Fletcher
 #Date: December 16, 2016
-#Last Modified: N/A
+#Last Modified: December 18, 2016
 #Email: Tarrell13@verizon.net
 #
 #Program will place items in the recycle bin instead of deleting them
