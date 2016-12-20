@@ -9,3 +9,10 @@ Program Requirements
 1. python3
 2. Send2trash module for python3
 
+UPDATE BRANCH
+
+Currently working on expanding the programs functionality to include:
+    a. Nuke Command: To delete files from bin
+    b. Show Command: To display Contents
+
+Work in Progress....

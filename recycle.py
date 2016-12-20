@@ -29,10 +29,10 @@ import sys
 def usage():
     print("Usage: ./recycle OPTIONS <Files or Directory>")
     print("Options: ")
-    print("-v:         Verbose Output")
+    print("-v:          Verbose Output")
     print("-h, --help:  Show help menu")
-    print("--show-bin:  Show trash bin contents(RUN ALONE)")
-    print("--nuke:     Empty trash bin contents(RUN ALONE)")
+    print("--show-bin:  Show trash bin contents")
+    print("--nuke:      Empty trash bin contents(RUN ALONE)")
     print("")
     print("Example: (1) ./recycle boo.txt")
     print("---------(2) ./recycle boo.txt foo.txt")
@@ -48,8 +48,7 @@ VERBOSE = False
 MAC = False
 LINUX = False
 NUKE = False
-SHOWBIN = False
-
+#SHOWBIN = False
 
 
 
@@ -70,10 +69,9 @@ def systemCheck():
 
 
 
-
 '''Turns command switches on'''
 def switchOn(arguments):
-    global VERBOSE, NUKE, SHOWBIN
+    global VERBOSE, NUKE
 
     for i in range(1, len(arguments)):
         if arguments[i] in commands:
@@ -90,7 +88,6 @@ def switchOn(arguments):
 
 
 
-
 '''For verbose output'''
 def success(file):
     location = '"'
@@ -100,7 +97,6 @@ def success(file):
     elif LINUX:
         location = "~/.local/share/Trash"
     return "\"%s\" successfully sent to %s" %(file, location)
-
 
 
 
@@ -124,16 +120,12 @@ def multi_line(arguments):
 
 
 
-
-
 '''Some commands can only be run if they are Specified Alone!'''
 def sanity(arguments):
     if len(arguments) == 2:
         return True
     else:
         return False
-
-
 
 
 
@@ -174,7 +166,6 @@ def nuke():
 
 
 
-
 def main():
 
     systemCheck()
@@ -189,11 +180,10 @@ def main():
         if NUKE:
             print("!!! Nuke must be run alone !!!")
     else:
-        if sanity(sys.argv):
-            if NUKE:
-                nuke()
-
-        multi_line(sys.argv)
+        if NUKE:
+            nuke()
+        else:
+            multi_line(sys.argv)
 
 
 
