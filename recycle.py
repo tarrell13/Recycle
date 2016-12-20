@@ -24,6 +24,8 @@ Example: (1) ./recycle boo.txt
 import os
 import send2trash
 import sys
+import getopt
+
 
 '''Check to see if user input is sufficient'''
 def usage():
@@ -41,18 +43,32 @@ def usage():
     sys.exit()
 
 
-'''Commands'''
-commands = ["-v", "-h", "--help", "--show-bin", "--nuke"]
 
 VERBOSE = False
 MAC = False
 LINUX = False
 NUKE = False
-#SHOWBIN = False
 
+'''Used to Get Command Line Options'''
+def operations(arguments):
 
+    global SHOWBIN, NUKE, VERBOSE
 
+    try:
+        opts, args = getopt.getopt(arguments[1:], ["help", "show-bin", "nuke"])
+    except getopt.GetoptError as err:
+        print(str(err))
+        usage()
 
+    for o, args in opts:
+        if o in ("-h", "--help"):
+            usage()
+        elif o in ("--show-bin"):
+            showBin()
+        elif o in ("--nuke"):
+            NUKE = True
+        elif o in ("-v"):
+            VERBOSE = True
 
 '''Checks to Determine Operating System'''
 def systemCheck():
@@ -65,29 +81,6 @@ def systemCheck():
     else:
         print("System Unknown")
 
-
-
-
-
-'''Turns command switches on'''
-def switchOn(arguments):
-    global VERBOSE, NUKE
-
-    for i in range(1, len(arguments)):
-        if arguments[i] in commands:
-            if str(arguments[i]) == "-v":
-                VERBOSE = True
-            elif str(arguments[i]) in commands == "--nuke":
-                NUKE = True
-            elif str(arguments[i]) in commands == "--show-bin":
-                showBin()
-            elif str(arguments[i]) == "-h" or str(arguments[i]) == "--help":
-                usage()
-
-
-
-
-
 '''For verbose output'''
 def success(file):
     location = '"'
@@ -97,8 +90,6 @@ def success(file):
     elif LINUX:
         location = "~/.local/share/Trash"
     return "\"%s\" successfully sent to %s" %(file, location)
-
-
 
 
 '''Handle Multiple Command Line Files'''
@@ -116,18 +107,6 @@ def multi_line(arguments):
                 print("\"%s\" does not exist" % arguments[i])
         except FileNotFoundError:
             print("\"%s\" does not exist" %arguments[i])
-
-
-
-
-'''Some commands can only be run if they are Specified Alone!'''
-def sanity(arguments):
-    if len(arguments) == 2:
-        return True
-    else:
-        return False
-
-
 
 
 '''Show trash bin contents'''
@@ -148,9 +127,6 @@ def showBin():
     sys.exit()
 
 
-
-
-
 '''Nuke the Trash Bin'''
 def nuke():
     if MAC:
@@ -163,28 +139,22 @@ def nuke():
     sys.exit()
 
 
-
-
-
 def main():
 
     systemCheck()
-    switchOn(sys.argv)
+    operations(sys.argv)
 
     '''Displays help menu'''
     if len(sys.argv) < 2:
         usage()
 
     '''Checks for too many arguments when nuke or show-nin'''
-    if len(sys.argv) >= 3:
-        if NUKE:
-            print("!!! Nuke must be run alone !!!")
+    if len(sys.argv) >= 3 and NUKE:
+        print("!!! Nuke must be run alone !!!")
+    elif NUKE:
+        nuke()
     else:
-        if NUKE:
-            nuke()
-        else:
-            multi_line(sys.argv)
-
+        multi_line(sys.argv)
 
 
 main()
