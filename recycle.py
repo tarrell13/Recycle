@@ -9,7 +9,11 @@ Email:         Tarrell13@verizon.net
 Program will place items in the recycle bin instead of deleting them
 Usage: ./recycle OPTIONS <File or Directory>
 Options:
--v:     Verbose Output
+-v:             Verbose Output
+-h, --help:     Show help menu with commands
+--show-bin:     Show trash bin contents
+--empty:        Empty trash contents
+
 
 Example: (1) ./recycle boo.txt
 ---------(2) ./recycle boo.txt foo.txt
@@ -22,10 +26,13 @@ import send2trash
 import sys
 
 '''Check to see if user input is sufficient'''
-if len(sys.argv) < 2:
+def usage():
     print("Usage: ./recycle OPTIONS <Files or Directory>")
     print("Options: ")
-    print(" -v:     Verbose Output")
+    print(" -v:         Verbose Output")
+    print("-h, --help:  Show help menu")
+    print("--show-bin:  Show trash bin contents(RUN ALONE)")
+    print("--empty:     Empty trash bin contents(RUN ALONE)")
     print("")
     print("Example: (1) ./recycle boo.txt")
     print("---------(2) ./recycle boo.txt foo.txt")
@@ -33,15 +40,25 @@ if len(sys.argv) < 2:
     print("---------(4) ./recycle *.txt")
     sys.exit()
 
-commands = ["-v"]
+commands = ["-v", "-h", "--help", "--show-bin", "--empty"]
 
 VERBOSE = False
+MAC = False
+LINUX = False
+
+'''Checks to Determine Operating System'''
+def systemCheck():
+    if os.uname()[0] == "Darwin":
+        MAC = True
+    elif os.uname()[0] == "Linux":
+        LINUX = True
 
 '''Turns command switches on'''
-for i in range(1, len(sys.argv)):
-    if sys.argv[i] in commands:
-        if str(sys.argv[i]) == "-v":
-            VERBOSE = True
+def switchOn(arguments):
+    for i in range(1, len(arguments)):
+        if arguments[i] in commands:
+            if str(arguments[i]) == "-v":
+                VERBOSE = True
 
 
 def success(file):
@@ -71,6 +88,35 @@ def multi_line(arguments):
             print("\"%s\" does not exist" %arguments[i])
 
 
-multi_line(sys.argv)
+'''Some commands can only be run if they are Specified Alone!'''
+def sanity(arguments):
+    if len(arguments) == 2:
+        return True
+    else:
+        print("!!!Command:\"%s\" must be run alone!!!")
+        sys.exit()
+
+
+'''Show trash bin contents'''
+def showBin():
+    print("------------------")
+    print("Trash Bin Contents")
+    print("------------------")
+    if MAC:
+        for file in os.listdir(os.environ["HOME"]+"/.Trash"):
+            if file == ".DS_Store":
+                continue
+            print("[+] %s" %file)
+    elif LINUX:
+        for file in os.listdir(os.environ["HOME"]+"/.usr/local/files"):
+            print("[+] %s" %file)
+    else:
+        print("Error")
+
+
+#multi_line(sys.argv)
+
+systemCheck()
+showBin()
 sys.exit()
 
