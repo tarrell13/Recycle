@@ -42,7 +42,7 @@ def usage():
     print("---------(4) ./recycle *.txt")
     sys.exit()
 
-
+commands = ["-h", "--help", "-v", "--show-bin", "--nuke"]
 
 VERBOSE = False
 MAC = False
@@ -52,23 +52,24 @@ NUKE = False
 '''Used to Get Command Line Options'''
 def operations(arguments):
 
-    global SHOWBIN, NUKE, VERBOSE
+    global NUKE, VERBOSE
 
     try:
-        opts, args = getopt.getopt(arguments[1:], ["help", "show-bin", "nuke"])
+        getopt.getopt(arguments[1:], "h:v",["help", "show-bin", "nuke"])
     except getopt.GetoptError as err:
         print(str(err))
         usage()
 
-    for o, args in opts:
-        if o in ("-h", "--help"):
+    for i in range(1, len(arguments)):
+        if arguments[i] == ["-h", "--help"]:
             usage()
-        elif o in ("--show-bin"):
-            showBin()
-        elif o in ("--nuke"):
+        elif arguments[i] == "--nuke":
             NUKE = True
-        elif o in ("-v"):
+        elif arguments[i] == "--show-bin":
+            showBin()
+        elif arguments[i] == "-v":
             VERBOSE = True
+
 
 '''Checks to Determine Operating System'''
 def systemCheck():
@@ -80,6 +81,7 @@ def systemCheck():
         LINUX = True
     else:
         print("System Unknown")
+
 
 '''For verbose output'''
 def success(file):

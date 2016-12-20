@@ -15,4 +15,10 @@ Currently working on expanding the programs functionality to include:
     a. Nuke Command: To delete files from bin
     b. Show Command: To display Contents
 
-Work in Progress....
+Work in Progress...
+
+
+
+UPDATE BRANCH - December 20, 2016
+
+a, b are functional and implemented options using the "getopts" module. So unrecognized options will now be flagged. 
