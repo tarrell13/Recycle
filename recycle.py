@@ -117,12 +117,13 @@ def showBin():
     print("Trash Bin Contents")
     print("------------------")
     if MAC:
-        for file in os.listdir(os.environ["HOME"]+"/.Trash"):
+        for file in os.listdir(os.path.expanduser("~")+"/.Trash"):
             if file == ".DS_Store":
                 continue
             print("[+] %s" %file)
     elif LINUX:
-        for file in os.listdir(os.environ["HOME"]+"/.usr/local/files"):
+        #for file in os.listdir(os.environ["HOME"]+"/.usr/local/files"):
+        for file in os.listdir(os.path.expanduser("~")+"/.usr/local/files"):
             print("[+] %s" %file)
     else:
         print("Error")
