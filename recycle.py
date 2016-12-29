@@ -117,13 +117,12 @@ def showBin():
     print("Trash Bin Contents")
     print("------------------")
     if MAC:
-        for file in os.listdir(os.path.expanduser("~")+"/.Trash"):
+        for file in os.listdir(os.path.expanduser("~") + "/.Trash"):
             if file == ".DS_Store":
                 continue
             print("[+] %s" %file)
     elif LINUX:
-        #for file in os.listdir(os.environ["HOME"]+"/.usr/local/files"):
-        for file in os.listdir(os.path.expanduser("~")+"/.usr/local/files"):
+        for file in os.listdir(os.path.expanduser("~")+"/.usr/local/Trash/files"):
             print("[+] %s" %file)
     else:
         print("Error")
@@ -133,10 +132,10 @@ def showBin():
 '''Nuke the Trash Bin'''
 def nuke():
     if MAC:
-        os.system("rm -rf " + os.environ["HOME"] + "/.Trash/*")
+        os.system("rm -rf " + os.path.expanduser("~") + "/.Trash/*")
     elif LINUX:
-        os.system("rm -rf " + os.environ["HOME"] + "/.usr/local/files/*")
-        os.system("rm -rf " + os.environ["HOME"] + "/.usr/local/info/*")
+        os.system("rm -rf " + os.path.expanduser("~") + "/.usr/local/Trash/files/*")
+        os.system("rm -rf " + os.path.expanduser("~") + "/.usr/local/Trash/info/*")
 
     print("Trash Bin Emptied")
     sys.exit()
